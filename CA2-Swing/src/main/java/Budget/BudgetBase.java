@@ -44,6 +44,9 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
     private JTextField otherSpendingField; //Other(spending) text field
     private JTextField totalSpendingField; //Total Speding field
 
+    private JTextField totalBudgetField; //total budget text field (for the surplus/deficit)
+
+
 
     // constructor - create UI  (dont need to change this)
     public BudgetBase(JFrame frame) {
@@ -179,13 +182,24 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         totalSpendingField.setEditable(false);    // user cannot directly edit this field (ie, it is read-only)
         addComponent(totalSpendingField, 15, 1);  
 
+        JLabel emptyLabel2 = new JLabel(" ");
+        addComponent(emptyLabel2, 16, 0);
+
+        //added a total budget label to calculate the surplus/deficit from the income and spending calculations
+        JLabel totalBudgetLabel = new JLabel("Total Budget");
+        addComponent(totalBudgetLabel, 17, 0);
+        totalBudgetField = new JTextField("", 10);
+        totalBudgetField.setHorizontalAlignment(JTextField.RIGHT);
+        totalBudgetField.setEditable(false);
+        addComponent(totalBudgetField, 17, 1);
+
         // Row 4 - Calculate Button
         calculateButton = new JButton("Calculate");
-        addComponent(calculateButton, 16, 0);  
+        addComponent(calculateButton, 18, 0);  
 
         // Row 5 - Exit Button
         exitButton = new JButton("Exit");
-        addComponent(exitButton, 17, 0);  
+        addComponent(exitButton, 19, 0);  
 
         // set up  listeners (in a spearate method)
         initListeners();
@@ -207,6 +221,7 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
             public void actionPerformed(ActionEvent e) {
                 calculateTotalIncome();
                 calculateTotalSpending();
+                calculateTotalBudget();
             }
         });
 
@@ -279,6 +294,23 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         
         totalSpendingField.setText(String.format("%.2f",totalSpending));
         return totalSpending;
+        }
+
+
+        public double calculateTotalBudget(){
+            double Income = calculateTotalIncome();
+            double Spending = calculateTotalSpending();
+
+            double Budget = Income - Spending;
+            if(Budget < 0){
+                totalBudgetField.setForeground(Color.red);
+            } else {
+                totalBudgetField.setForeground(Color.black);
+            }
+
+            totalBudgetField.setText(String.format("%.2f", Budget));
+
+            return Budget;
         }
 
     // return the value if a text field as a double
