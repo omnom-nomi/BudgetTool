@@ -128,52 +128,64 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         - Entertainment
         - other spending
         */
+        JLabel emptyLabel = new JLabel(" ");
+        addComponent(emptyLabel, 7, 0);
+
         JLabel spendingLabel = new JLabel("SPENDING");
-        addComponent(spendingLabel, 7, 0);
+        addComponent(spendingLabel, 8, 0);
 
         JLabel foodLabel = new JLabel("Food");
-        addComponent(foodLabel, 8, 0);
+        addComponent(foodLabel, 9, 0);
+
         foodField = new JTextField("", 10);
         foodField.setHorizontalAlignment(JTextField.RIGHT) ;
-        addComponent(familyField, 8, 1);
+        addComponent(foodField, 9, 1);
 
         JLabel rentLabel = new JLabel("Rent");
-        addComponent(rentLabel, 9, 0);
+        addComponent(rentLabel, 10, 0);
         rentField = new JTextField("", 10);
         rentField.setHorizontalAlignment(JTextField.RIGHT) ;
-        addComponent(rentField, 9, 1);
+        addComponent(rentField, 10, 1);
 
         JLabel commutingLabel = new JLabel("Commuting");
-        addComponent(commutingLabel, 10, 1);
+        addComponent(commutingLabel, 11, 0);
         commutingField = new JTextField("", 10);
         commutingField.setHorizontalAlignment(JTextField.RIGHT);
-        addComponent(commutingField, 10, 1);
+        addComponent(commutingField, 11, 1);
 
         JLabel billsLabel = new JLabel("Bills");
-        addComponent(billsLabel, 11, 0);
+        addComponent(billsLabel, 12, 0);
         billsField = new JTextField("", 10);
         billsField.setHorizontalAlignment(JTextField.RIGHT);
-        addComponent(billsField, 11, 1);
+        addComponent(billsField, 12, 1);
 
         JLabel entertainmentLabel = new JLabel("Entertainment");
-        addComponent(entertainmentLabel, 12, 0);
+        addComponent(entertainmentLabel, 13, 0);
         entertainmentField = new JTextField("", 10);
         entertainmentField.setHorizontalAlignment(JTextField.RIGHT);
-        addComponent(entertainmentField, 12, 1);
+        addComponent(entertainmentField, 13, 1);
 
         JLabel otherSpendingLabel = new JLabel("Other spending");
-        addComponent(otherSpendingLabel, 13, 0);
+        addComponent(otherSpendingLabel, 14, 0);
         otherSpendingField = new JTextField("", 10);
         otherSpendingField.setHorizontalAlignment(JTextField.RIGHT);
-        addComponent(otherSpendingField, 13, 1);
+        addComponent(otherSpendingField, 14, 1);
+
+        JLabel totalSpendingLabel = new JLabel("Total Spending");
+        addComponent(totalSpendingLabel, 15, 0);
+        // set up text box for displaying total spending.  Users can view, but cannot directly edit it
+        totalSpendingField = new JTextField("0", 10);   // 0 initially, with 10 columns
+        totalSpendingField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
+        totalSpendingField.setEditable(false);    // user cannot directly edit this field (ie, it is read-only)
+        addComponent(totalSpendingField, 15, 1);  
 
         // Row 4 - Calculate Button
         calculateButton = new JButton("Calculate");
-        addComponent(calculateButton, 8, 0);  
+        addComponent(calculateButton, 16, 0);  
 
         // Row 5 - Exit Button
         exitButton = new JButton("Exit");
-        addComponent(exitButton, 9, 0);  
+        addComponent(exitButton, 17, 0);  
 
         // set up  listeners (in a spearate method)
         initListeners();
@@ -190,10 +202,11 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
             }
         });
 
-        // calculateButton - call calculateTotalIncome() when pressed
+        // calculateButton - call calculateTotalIncome() and calculateTotalSpending() when pressed
         calculateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 calculateTotalIncome();
+                calculateTotalSpending();
             }
         });
 
@@ -239,6 +252,34 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         totalIncomeField.setText(String.format("%.2f",totalIncome));  // format with 2 digits after the .
         return totalIncome;
     }
+
+    public double calculateTotalSpending(){
+        double [] spendingSources = {
+            getTextFieldValue(foodField),
+            getTextFieldValue(rentField),
+            getTextFieldValue(commutingField),
+            getTextFieldValue(billsField),
+            getTextFieldValue(entertainmentField),
+            getTextFieldValue(otherSpendingField)
+        };
+
+        //clear total field if any value is NaN 
+        for(double spending : spendingSources){
+            if(Double.isNaN(spending)){
+                totalSpendingField.setText("");
+                return 0.0;
+            }
+        }
+
+        //otherwise calculate the total spending abd update the text field
+        double totalSpending = 0.0;
+        for(double spending : spendingSources){
+            totalSpending += spending;
+        }
+        
+        totalSpendingField.setText(String.format("%.2f",totalSpending));
+        return totalSpending;
+        }
 
     // return the value if a text field as a double
     // --return 0 if field is blank
