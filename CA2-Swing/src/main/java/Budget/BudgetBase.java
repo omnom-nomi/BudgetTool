@@ -160,6 +160,9 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         // get values from income text fields.  valie is NaN if an error occurs
         double wages = getTextFieldValue(wagesField);
         double loans = getTextFieldValue(loansField);
+        double savings = getTextFieldValue(savingsField);
+        double family = getTextFieldValue(familyField);
+        double otherIncome = getTextFieldValue(otherIncomeField);
 
         // clear total field and return if any value is NaN (error)
         if (Double.isNaN(wages) || Double.isNaN(loans)) {
@@ -169,7 +172,7 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         }
 
         // otherwise calculate total income and update text field
-        double totalIncome = wages + loans;
+        double totalIncome = wages + loans + savings + family + otherIncome;
         totalIncomeField.setText(String.format("%.2f",totalIncome));  // format with 2 digits after the .
         return totalIncome;
     }
