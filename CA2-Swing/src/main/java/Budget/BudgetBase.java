@@ -43,7 +43,7 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
     private JTextField entertainmentField; //Entertainment text field
     private JTextField otherSpendingField; //Other(spending) text field
     private JTextField totalSpendingField; //Total Speding field
-     
+
 
     // constructor - create UI  (dont need to change this)
     public BudgetBase(JFrame frame) {
@@ -80,6 +80,13 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         loansField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
         addComponent(loansField, 2, 1); 
 
+        /*
+        added other income labels:
+
+        - savings
+        - family and
+        - other incomes
+        */
         JLabel savingsLabel = new JLabel("Savings");
         addComponent(savingsLabel, 3, 0);
 
@@ -111,13 +118,62 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         totalIncomeField.setEditable(false);    // user cannot directly edit this field (ie, it is read-only)
         addComponent(totalIncomeField, 6, 1);  
 
+        //SPENDING label
+
+        /*also added relevant spending labels:
+        - food
+        - rent
+        - commuting
+        - bills
+        - Entertainment
+        - other spending
+        */
+        JLabel spendingLabel = new JLabel("SPENDING");
+        addComponent(spendingLabel, 7, 0);
+
+        JLabel foodLabel = new JLabel("Food");
+        addComponent(foodLabel, 8, 0);
+        foodField = new JTextField("", 10);
+        foodField.setHorizontalAlignment(JTextField.RIGHT) ;
+        addComponent(familyField, 8, 1);
+
+        JLabel rentLabel = new JLabel("Rent");
+        addComponent(rentLabel, 9, 0);
+        rentField = new JTextField("", 10);
+        rentField.setHorizontalAlignment(JTextField.RIGHT) ;
+        addComponent(rentField, 9, 1);
+
+        JLabel commutingLabel = new JLabel("Commuting");
+        addComponent(commutingLabel, 10, 1);
+        commutingField = new JTextField("", 10);
+        commutingField.setHorizontalAlignment(JTextField.RIGHT);
+        addComponent(commutingField, 10, 1);
+
+        JLabel billsLabel = new JLabel("Bills");
+        addComponent(billsLabel, 11, 0);
+        billsField = new JTextField("", 10);
+        billsField.setHorizontalAlignment(JTextField.RIGHT);
+        addComponent(billsField, 11, 1);
+
+        JLabel entertainmentLabel = new JLabel("Entertainment");
+        addComponent(entertainmentLabel, 12, 0);
+        entertainmentField = new JTextField("", 10);
+        entertainmentField.setHorizontalAlignment(JTextField.RIGHT);
+        addComponent(entertainmentField, 12, 1);
+
+        JLabel otherSpendingLabel = new JLabel("Other spending");
+        addComponent(otherSpendingLabel, 13, 0);
+        otherSpendingField = new JTextField("", 10);
+        otherSpendingField.setHorizontalAlignment(JTextField.RIGHT);
+        addComponent(otherSpendingField, 13, 1);
+
         // Row 4 - Calculate Button
         calculateButton = new JButton("Calculate");
-        addComponent(calculateButton, 7, 0);  
+        addComponent(calculateButton, 8, 0);  
 
         // Row 5 - Exit Button
         exitButton = new JButton("Exit");
-        addComponent(exitButton, 8, 0);  
+        addComponent(exitButton, 9, 0);  
 
         // set up  listeners (in a spearate method)
         initListeners();
@@ -157,22 +213,29 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
     // use double to hold numbers, so user can type fractional amounts such as 134.50
     public double calculateTotalIncome() {
 
+        double[] incomeSources = {
         // get values from income text fields.  valie is NaN if an error occurs
-        double wages = getTextFieldValue(wagesField);
-        double loans = getTextFieldValue(loansField);
-        double savings = getTextFieldValue(savingsField);
-        double family = getTextFieldValue(familyField);
-        double otherIncome = getTextFieldValue(otherIncomeField);
+        getTextFieldValue(wagesField),
+        getTextFieldValue(loansField),
+        getTextFieldValue(savingsField),
+        getTextFieldValue(familyField),
+        getTextFieldValue(otherIncomeField)
+        };
 
         // clear total field and return if any value is NaN (error)
-        if (Double.isNaN(wages) || Double.isNaN(loans)) {
-            totalIncomeField.setText("");  // clear total income field
-            wages = 0.0;
-            return wages;   // exit method and do nothing
+        for(double income : incomeSources){
+            if (Double.isNaN(income)) {
+                totalIncomeField.setText("");  // clear total income field
+                return 0.0; //exit method and do nothing
+            }
         }
 
         // otherwise calculate total income and update text field
-        double totalIncome = wages + loans + savings + family + otherIncome;
+        double totalIncome = 0.0;
+        for(double income : incomeSources){
+            totalIncome += income;
+        }
+        
         totalIncomeField.setText(String.format("%.2f",totalIncome));  // format with 2 digits after the .
         return totalIncome;
     }
