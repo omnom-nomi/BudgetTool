@@ -69,7 +69,7 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         // Could create method to do below (since this is done several times)
         wagesField = new JTextField("", 10);   // blank initially, with 10 columns
         wagesField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
-        addComponent(wagesField, 1, 1);   
+        addComponent(wagesField, 1, 1);
 
         // Row 2 - Loans label followed by loans textbox
         JLabel loansLabel = new JLabel("Loans");
@@ -80,32 +80,48 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         loansField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
         addComponent(loansField, 2, 1); 
 
+        JLabel savingsLabel = new JLabel("Savings");
+        addComponent(savingsLabel, 3, 0);
+
+        savingsField = new JTextField("", 10);
+        savingsField.setHorizontalAlignment(JTextField.RIGHT) ;
+        addComponent(savingsField, 3, 1);
+
+        JLabel familyLabel = new JLabel("Family");
+        addComponent(familyLabel, 4, 0);
+
+        familyField = new JTextField("", 10);
+        familyField.setHorizontalAlignment(JTextField.RIGHT) ;
+        addComponent(familyField, 4, 1);
+
+        JLabel otherIncomeLabel = new JLabel("Other income");
+        addComponent(otherIncomeLabel, 5, 0);
+
+        otherIncomeField = new JTextField("", 10);
+        otherIncomeField.setHorizontalAlignment(JTextField.RIGHT) ; 
+        addComponent(otherIncomeField, 5, 1);
+
         // Row 3 - Total Income label followed by total income field
         JLabel totalIncomeLabel = new JLabel("Total Income");
-        addComponent(totalIncomeLabel, 3, 0);
+        addComponent(totalIncomeLabel, 6, 0);
 
         // set up text box for displaying total income.  Users cam view, but cannot directly edit it
         totalIncomeField = new JTextField("0", 10);   // 0 initially, with 10 columns
         totalIncomeField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
         totalIncomeField.setEditable(false);    // user cannot directly edit this field (ie, it is read-only)
-        addComponent(totalIncomeField, 3, 1);  
+        addComponent(totalIncomeField, 6, 1);  
 
         // Row 4 - Calculate Button
         calculateButton = new JButton("Calculate");
-        addComponent(calculateButton, 4, 0);  
+        addComponent(calculateButton, 7, 0);  
 
         // Row 5 - Exit Button
         exitButton = new JButton("Exit");
-        addComponent(exitButton, 5, 0);  
+        addComponent(exitButton, 8, 0);  
 
         // set up  listeners (in a spearate method)
         initListeners();
     }
-
-
-
-
-
 
     // set up listeners
     // initially just for buttons, can add listeners for text fields
@@ -132,6 +148,7 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         layoutConstraints.fill = GridBagConstraints.HORIZONTAL;   // always use horixontsl filll
         layoutConstraints.gridx = gridcol;
         layoutConstraints.gridy = gridrow;
+
         add(component, layoutConstraints);
 
     }
