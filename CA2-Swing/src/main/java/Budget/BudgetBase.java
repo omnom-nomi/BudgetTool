@@ -46,8 +46,6 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
 
     private JTextField totalBudgetField; //total budget text field (for the surplus/deficit)
 
-
-
     // constructor - create UI  (dont need to change this)
     public BudgetBase(JFrame frame) {
         topLevelFrame = frame; // keep track of top-level frame
