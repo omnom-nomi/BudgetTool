@@ -29,20 +29,20 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
     private JButton calculateButton;   // Calculate button
     private JButton exitButton;        // Exit button
 
-    private JTextField wagesField;     // Wages text field
-    private JTextField loansField;     // Loans text field
-    private JTextField savingsField; //Savings text field
-    private JTextField familyField; //Family text field
-    private JTextField otherIncomeField; //Other text fields
-    private JTextField totalIncomeField; // Total Income field
+    public JTextField wagesField;     // Wages text field
+    public JTextField loansField;     // Loans text field
+    public JTextField savingsField; //Savings text field
+    public JTextField familyField; //Family text field
+    public JTextField otherIncomeField; //Other text fields
+    public JTextField totalIncomeField; // Total Income field
 
-    private JTextField foodField; //Food text field
-    private JTextField rentField; //Rent text field
-    private JTextField commutingField; //Commuting text field
-    private JTextField billsField; //bills text field
-    private JTextField entertainmentField; //Entertainment text field
-    private JTextField otherSpendingField; //Other(spending) text field
-    private JTextField totalSpendingField; //Total Speding field
+    public JTextField foodField; //Food text field
+    public JTextField rentField; //Rent text field
+    public JTextField commutingField; //Commuting text field
+    public JTextField billsField; //bills text field
+    public JTextField entertainmentField; //Entertainment text field
+    public JTextField otherSpendingField; //Other(spending) text field
+    public JTextField totalSpendingField; //Total Speding field
 
     private JTextField totalBudgetField; //total budget text field (for the surplus/deficit)
 
