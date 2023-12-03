@@ -46,6 +46,10 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
 
     private JTextField totalBudgetField; //total budget text field (for the surplus/deficit)
 
+    private JRadioButton weeklyIncomeButton = new JRadioButton("Weekly");
+    private JRadioButton monthlyIncomeButton = new JRadioButton("Monthly", true);
+    private JRadioButton yearlyIncomeButton = new JRadioButton("Yearly");
+
     // constructor - create UI  (dont need to change this)
     public BudgetBase(JFrame frame) {
         topLevelFrame = frame; // keep track of top-level frame
@@ -191,13 +195,22 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         totalBudgetField.setEditable(false);
         addComponent(totalBudgetField, 17, 1);
 
+        ButtonGroup group = new ButtonGroup();
+        group.add(weeklyIncomeButton);
+        group.add(monthlyIncomeButton);
+        group.add(yearlyIncomeButton);
+
+        addComponent(weeklyIncomeButton, 18, 0);
+        addComponent(monthlyIncomeButton, 18, 1);
+        addComponent(yearlyIncomeButton, 18, 2);
+
         // Row 4 - Calculate Button
         calculateButton = new JButton("Calculate");
-        addComponent(calculateButton, 18, 0);  
+        addComponent(calculateButton, 19, 0);  
 
         // Row 5 - Exit Button
         exitButton = new JButton("Exit");
-        addComponent(exitButton, 19, 0);  
+        addComponent(exitButton, 20, 0);  
 
         // set up  listeners (in a spearate method)
         initListeners();
@@ -256,8 +269,19 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
             }
         }
 
+        if(weeklyIncomeButton.isSelected()){
+            for(int i = 0; i < incomeSources.length; i++){
+                incomeSources[i] *= 4.33;
+            }
+        } else if (yearlyIncomeButton.isSelected()){
+            for(int i = 0; i < incomeSources.length; i++){
+                incomeSources[i] /= 12;
+            }
+        }
+
         // otherwise calculate total income and update text field
         double totalIncome = 0.0;
+
         for(double income : incomeSources){
             totalIncome += income;
         }
@@ -276,11 +300,20 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
             getTextFieldValue(otherSpendingField)
         };
 
-        //clear total field if any value is NaN 
         for(double spending : spendingSources){
             if(Double.isNaN(spending)){
                 totalSpendingField.setText("");
                 return 0.0;
+            }
+        }
+
+        if(weeklyIncomeButton.isSelected()){
+            for(int i = 0; i < spendingSources.length; i++){
+                spendingSources[i] *= 4.33;
+            }
+        } else if (yearlyIncomeButton.isSelected()){
+            for(int i = 0; i < spendingSources.length; i++){
+                spendingSources[i] /= 12;
             }
         }
 
