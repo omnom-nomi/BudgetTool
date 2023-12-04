@@ -17,6 +17,9 @@ package Budget;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.DocumentEvent;
+
 
 // class definition
 public class BudgetBase extends JPanel {    // based on Swing JPanel
@@ -62,6 +65,8 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
     // will be generated automatically by IntelliJ, Eclipse, etc
     private void initComponents() { 
 
+        MyDocumentListener myDocumentListener = new MyDocumentListener();
+
         // Top row (0) - "INCOME" label
         JLabel incomeLabel = new JLabel("INCOME");
         addComponent(incomeLabel, 0, 0);
@@ -75,6 +80,7 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         wagesField = new JTextField("", 10);   // blank initially, with 10 columns
         wagesField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
         addComponent(wagesField, 1, 1);
+        wagesField.getDocument().addDocumentListener(myDocumentListener);
 
         // Row 2 - Loans label followed by loans textbox
         JLabel loansLabel = new JLabel("Loans");
@@ -83,7 +89,8 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         // set up text box for entering loans
         loansField = new JTextField("", 10);   // blank initially, with 10 columns
         loansField.setHorizontalAlignment(JTextField.RIGHT) ;    // number is at right end of field
-        addComponent(loansField, 2, 1); 
+        addComponent(loansField, 2, 1);
+        loansField.getDocument().addDocumentListener(myDocumentListener); 
 
         /*
         added other income labels:
@@ -98,6 +105,7 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         savingsField = new JTextField("", 10);
         savingsField.setHorizontalAlignment(JTextField.RIGHT) ;
         addComponent(savingsField, 3, 1);
+        savingsField.getDocument().addDocumentListener(myDocumentListener);
 
         JLabel familyLabel = new JLabel("Family");
         addComponent(familyLabel, 4, 0);
@@ -105,6 +113,7 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         familyField = new JTextField("", 10);
         familyField.setHorizontalAlignment(JTextField.RIGHT) ;
         addComponent(familyField, 4, 1);
+        familyField.getDocument().addDocumentListener(myDocumentListener);
 
         JLabel otherIncomeLabel = new JLabel("Other income");
         addComponent(otherIncomeLabel, 5, 0);
@@ -112,6 +121,7 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         otherIncomeField = new JTextField("", 10);
         otherIncomeField.setHorizontalAlignment(JTextField.RIGHT) ; 
         addComponent(otherIncomeField, 5, 1);
+        otherIncomeField.getDocument().addDocumentListener(myDocumentListener);
 
         // Row 3 - Total Income label followed by total income field
         JLabel totalIncomeLabel = new JLabel("Total Income");
@@ -145,36 +155,42 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
         foodField = new JTextField("", 10);
         foodField.setHorizontalAlignment(JTextField.RIGHT) ;
         addComponent(foodField, 9, 1);
+        foodField.getDocument().addDocumentListener(myDocumentListener);
 
         JLabel rentLabel = new JLabel("Rent");
         addComponent(rentLabel, 10, 0);
         rentField = new JTextField("", 10);
         rentField.setHorizontalAlignment(JTextField.RIGHT) ;
         addComponent(rentField, 10, 1);
+        rentField.getDocument().addDocumentListener(myDocumentListener);
 
         JLabel commutingLabel = new JLabel("Commuting");
         addComponent(commutingLabel, 11, 0);
         commutingField = new JTextField("", 10);
         commutingField.setHorizontalAlignment(JTextField.RIGHT);
         addComponent(commutingField, 11, 1);
+        commutingField.getDocument().addDocumentListener(myDocumentListener);
 
         JLabel billsLabel = new JLabel("Bills");
         addComponent(billsLabel, 12, 0);
         billsField = new JTextField("", 10);
         billsField.setHorizontalAlignment(JTextField.RIGHT);
         addComponent(billsField, 12, 1);
+        billsField.getDocument().addDocumentListener(myDocumentListener);
 
         JLabel entertainmentLabel = new JLabel("Entertainment");
         addComponent(entertainmentLabel, 13, 0);
         entertainmentField = new JTextField("", 10);
         entertainmentField.setHorizontalAlignment(JTextField.RIGHT);
         addComponent(entertainmentField, 13, 1);
+        entertainmentField.getDocument().addDocumentListener(myDocumentListener);
 
         JLabel otherSpendingLabel = new JLabel("Other spending");
         addComponent(otherSpendingLabel, 14, 0);
         otherSpendingField = new JTextField("", 10);
         otherSpendingField.setHorizontalAlignment(JTextField.RIGHT);
         addComponent(otherSpendingField, 14, 1);
+        otherSpendingField.getDocument().addDocumentListener(myDocumentListener);
 
         JLabel totalSpendingLabel = new JLabel("Total Spending");
         addComponent(totalSpendingLabel, 15, 0);
@@ -214,6 +230,7 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
 
         // set up  listeners (in a spearate method)
         initListeners();
+
     }
 
     // set up listeners
@@ -227,6 +244,25 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
             }
         });
 
+        weeklyIncomeButton.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            calculate();
+        }
+        });
+
+        monthlyIncomeButton.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            calculate();
+        }
+        });
+
+        yearlyIncomeButton.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            calculate();
+        }
+        });
+
+        /*
         // calculateButton - call calculateTotalIncome() and calculateTotalSpending() when pressed
         calculateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -234,8 +270,28 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
                 calculateTotalSpending();
                 calculateTotalBudget();
             }
-        });
+        });*/
 
+    }
+
+    class MyDocumentListener implements DocumentListener{
+        public void insertUpdate(DocumentEvent e){
+            calculate();
+        }
+
+        public void removeUpdate(DocumentEvent e){
+            calculate();
+        }
+
+        public void changedUpdate(DocumentEvent e){
+            //this method isn't used as plain text components don't fire these events
+        }
+    }
+
+    private void calculate(){
+        calculateTotalIncome();
+        calculateTotalSpending();
+        calculateTotalBudget();
     }
 
     // add a component at specified row and column in UI.  (0,0) is top-left corner
@@ -271,7 +327,7 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
 
         if(weeklyIncomeButton.isSelected()){
             for(int i = 0; i < incomeSources.length; i++){
-                incomeSources[i] /= 4.33;
+                incomeSources[i] /= 4.3333333;
             }
         } else if (yearlyIncomeButton.isSelected()){
             for(int i = 0; i < incomeSources.length; i++){
@@ -309,7 +365,7 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
 
         if(weeklyIncomeButton.isSelected()){
             for(int i = 0; i < spendingSources.length; i++){
-                spendingSources[i] /= 4.33;
+                spendingSources[i] /= 4.3333333;
             }
         } else if (yearlyIncomeButton.isSelected()){
             for(int i = 0; i < spendingSources.length; i++){

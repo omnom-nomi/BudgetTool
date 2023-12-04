@@ -103,4 +103,13 @@ public class BudgetBaseTest
         assertEquals(expectedSpending, result, 0.01, "The total spending should be correct based on user input");
     }
 
+    @Test
+    public void testRadioButtonAction(){
+        JFrame frame = new JFrame();
+        BudgetBase bb = new BudgetBase(frame);
+
+        bb.weeklyIncomeButton.isSelected(true);
+        
+    }
+
 }
