@@ -271,11 +271,11 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
 
         if(weeklyIncomeButton.isSelected()){
             for(int i = 0; i < incomeSources.length; i++){
-                incomeSources[i] *= 4.33;
+                incomeSources[i] /= 4.33;
             }
         } else if (yearlyIncomeButton.isSelected()){
             for(int i = 0; i < incomeSources.length; i++){
-                incomeSources[i] /= 12;
+                incomeSources[i] *= 12;
             }
         }
 
@@ -309,11 +309,11 @@ public class BudgetBase extends JPanel {    // based on Swing JPanel
 
         if(weeklyIncomeButton.isSelected()){
             for(int i = 0; i < spendingSources.length; i++){
-                spendingSources[i] *= 4.33;
+                spendingSources[i] /= 4.33;
             }
         } else if (yearlyIncomeButton.isSelected()){
             for(int i = 0; i < spendingSources.length; i++){
-                spendingSources[i] /= 12;
+                spendingSources[i] *= 12;
             }
         }
 
